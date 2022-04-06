@@ -2,9 +2,16 @@
 version: '3.7'
 services:
  telegram-bot-api:
-  image: aiogram/telegram-bot-api:latest
+  image: python:latest
+  restart: always
+  build:
+   context: .
+   dockerfile: . .
   environment:
-    - MySQL=["localhost", "user", "123", "support_bot_db"]
+    - MySQL[0]="localhost"
+    - MySQL[1]= "user"
+    - MySQL[2]= "123"
+    - MySQL[3]= "support_bot_db"
     - TOKEN="5086253203:AAEVvkxIRLx_qExEgtrG9gzVvPxLytnK_aU"
     - ADMIN_ID="462216138"
   ports:

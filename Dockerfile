@@ -1,14 +1,18 @@
-FROM os
+FROM python:latest
 
-RUN apt-get update
-RUN apt-get upgrade
-RUN apt-get install python3
-RUN apt-get install python3-venv
-RUN pip3 install pyTelegramBotAPI
+WORKDIR /usr/src/app
 
-WORKDIR /usr/src/MephiBot
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY sql.py bot.py core.py markup.py
-ADD run.sh
+#RUN apt-get update
+#RUN apt-get upgrade
+#RUN apt-get install python3
+#RUN apt-get install python3-venv
+#RUN pip3 install pyTelegramBotAPI
 
-CMD [ "python", "./run.sh" ]
+WORKDIR /usr/Desctop/MephiBot
+
+COPY . .
+
+CMD [ "python3", "./run.sh" ]
