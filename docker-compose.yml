@@ -1,21 +1,44 @@
 
 version: '3.7'
 services:
+ db:
+    container_name: sql-support_bot_db
+    image: mysql:8.0
+    restart: always
+    ports:
+      - 3301:3306
+    environment:
+      - MYSQL_NAME=support_bot_db
+      - HOST='localhost'
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=123
+      - MYSQL_ROOT_PASSWORD=111111
+    volumes:
+      - ./SQL-DB/sql:/docker-entrypoint-initdb.d
+      - ./SQL-DB/data:/var/lib/mysql
+      - ./SQL-DB/sql_conf:/etc/mysql/conf.d
  telegram-bot-api:
-  image: python:latest
-  restart: always
-  build:
-   context: .
-   dockerfile: . .
-  environment:
-    - MySQL[0]="localhost"
-    - MySQL[1]= "user"
-    - MySQL[2]= "123"
-    - MySQL[3]= "support_bot_db"
-    - TOKEN="5086253203:AAEVvkxIRLx_qExEgtrG9gzVvPxLytnK_aU"
-    - ADMIN_ID="462216138"
-  ports:
-    - 8081:8081
+    image: python:latest
+    restart: always
+    build:
+       context: .
+       dockerfile: . .
+    depends_on:
+     - db
+    environment:
+     - MySQL[0]="localhost"
+     - MySQL[1]= "user"
+     - MySQL[2]= "123"
+     - MySQL[3]= "support_bot_db"
+     - TOKEN="5086253203:AAEVvkxIRLx_qExEgtrG9gzVvPxLytnK_aU"
+     - ADMIN_ID="462216138"
+    links:
+     - db
+    ports:
+     - 8081:8081
+    volumes:
+        - ./SQL-DB:/data
+volumes:
+  db:
+    driver: local
 
-  volumes:
-    - ./SQL-DB:/data
