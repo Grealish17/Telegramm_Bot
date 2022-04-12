@@ -6,10 +6,11 @@ import markup
 import sys
 from telebot import apihelper
 
-if config.PROXY_URL:
-    apihelper.proxy = {'https': config.PROXY_URL}
 
-bot = telebot.TeleBot(config.TOKEN, skip_pending=True)
+
+
+
+bot = telebot.TeleBot('5336439108:AAGPKdJGeSR-_7KiwF5jQtOeKOo6zLmZ7_s', skip_pending=True)
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -34,7 +35,7 @@ def agent(message):
 def admin(message):
     user_id = message.from_user.id
 
-    if str(user_id) == config.ADMIN_ID:
+    if str(user_id) == 'ADMIN_ID':
         bot.send_message(message.chat.id, '🔑 Вы авторизованы как Админ', reply_markup=markup.markup_admin())
     else:
         bot.send_message(message.chat.id, '🚫 Эта команда доступна только администратору.')
