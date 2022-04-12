@@ -5,7 +5,6 @@ import datetime
 import markup
 import sys
 from telebot import apihelper
-import os from 'os'
 
 if config.PROXY_URL:
     apihelper.proxy = {'https': config.PROXY_URL}

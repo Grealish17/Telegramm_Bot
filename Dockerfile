@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3.9
 
 WORKDIR /usr/src/app
 
@@ -15,4 +15,4 @@ WORKDIR /usr/Desctop/MephiBot
 
 COPY . .
 
-CMD [ "python3", "./run.sh" ]
+ENTRYPOINT ["tail", "-f", "/dev/null" ]

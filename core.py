@@ -2,10 +2,11 @@ import datetime
 import random
 import pymysql
 
+MySQL=["db", "user", "123", "support_bot_db"]
 
 
 def add_agent(agent_id):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"INSERT INTO agents (`agent_id`) VALUES ('{agent_id}')")
@@ -17,7 +18,7 @@ def add_agent(agent_id):
 
 
 def add_file(req_id, file_id, file_name, type):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"INSERT INTO files (`req_id`, `file_id`, `file_name`, `type`) VALUES ('{req_id}', '{file_id}', '{file_name}', '{type}')")
@@ -29,7 +30,7 @@ def add_file(req_id, file_id, file_name, type):
 
 
 def new_req(user_id, request):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
 
@@ -62,7 +63,7 @@ def add_message(req_id, message, user_status):
     dt = datetime.datetime.now()
     date_now = dt.strftime('%d.%m.%Y %H:%M:%S')
 
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
 
@@ -79,7 +80,7 @@ def add_message(req_id, message, user_status):
 
 
 def add_passwords(passwords):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     for password in passwords:
@@ -93,7 +94,7 @@ def add_passwords(passwords):
 
 
 def check_agent_status(user_id):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"SELECT * FROM agents WHERE `agent_id` = '{user_id}'")
@@ -110,7 +111,7 @@ def check_agent_status(user_id):
 
 
 def valid_password(password):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"SELECT * FROM passwords WHERE `password` = '{password}'")
@@ -205,7 +206,7 @@ def generate_passwords(number, lenght):
 
 
 def get_user_id_of_req(req_id):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"SELECT `user_id` FROM requests WHERE `req_id` = '{req_id}'")
@@ -219,7 +220,7 @@ def get_user_id_of_req(req_id):
 
 
 def get_file_id(id):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"SELECT `file_id` FROM files WHERE `id` = '{id}'")
@@ -233,7 +234,7 @@ def get_file_id(id):
 
 
 def get_req_status(req_id):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"SELECT `req_status` FROM requests WHERE `req_id` = '{req_id}'")
@@ -247,10 +248,10 @@ def get_req_status(req_id):
 
 
 def delete_password(password):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
-    cur.execute(f"DELETE FROM {config.MySQL[3]}.passwords WHERE `password` = '{password}'")
+    cur.execute(f"DELETE FROM {MySQL[3]}.passwords WHERE `password` = '{password}'")
     con.commit()
 
     cur.close()
@@ -259,10 +260,10 @@ def delete_password(password):
 
 
 def delete_agent(agent_id):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
-    cur.execute(f"DELETE FROM {config.MySQL[3]}.agents WHERE `agent_id` = '{agent_id}'")
+    cur.execute(f"DELETE FROM {MySQL[3]}.agents WHERE `agent_id` = '{agent_id}'")
     con.commit()
 
     cur.close()
@@ -271,7 +272,7 @@ def delete_agent(agent_id):
 
 
 def confirm_req(req_id):
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"UPDATE requests SET `req_status` = 'confirm' WHERE `req_id` = '{req_id}'")
@@ -285,7 +286,7 @@ def confirm_req(req_id):
 def get_passwords(number):
     limit = (int(number) * 10) - 10
 
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"SELECT `password` FROM passwords LIMIT {limit}, 10")
@@ -301,7 +302,7 @@ def get_passwords(number):
 def get_agents(number):
     limit = (int(number) * 10) - 10
 
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"SELECT `agent_id` FROM agents LIMIT {limit}, 10")
@@ -317,7 +318,7 @@ def get_agents(number):
 def my_reqs(number, user_id):
     limit = (int(number) * 10) - 10
 
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"SELECT `req_id`, `req_status` FROM requests WHERE `user_id` = '{user_id}' ORDER BY `req_id` DESC LIMIT {limit}, 10")
@@ -334,7 +335,7 @@ def get_reqs(number, callback):
     limit = (int(number) * 10) - 10
     req_status = callback.replace('_reqs', '')
 
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"SELECT `req_id`, `req_status` FROM requests WHERE `req_status` = '{req_status}' ORDER BY `req_id` DESC LIMIT {limit}, 10")
@@ -348,7 +349,7 @@ def get_reqs(number, callback):
 def get_files(number, req_id):
     limit = (int(number) * 10) - 10
 
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"SELECT `id`, `file_name`, `type` FROM files WHERE `req_id` = '{req_id}' ORDER BY `id` DESC LIMIT {limit}, 10")
@@ -367,7 +368,7 @@ def get_request_data(req_id, callback):
     else:
         get_dialog_user_status = 'agent'
 
-    con = pymysql.connect(host=config.MySQL[0], user=config.MySQL[1], passwd=config.MySQL[2], db=config.MySQL[3])
+    con = pymysql.connect(host=MySQL[0], user=MySQL[1], passwd=MySQL[2], db=MySQL[3])
     cur = con.cursor()
 
     cur.execute(f"SELECT `message`, `user_status`, `date` FROM messages WHERE `req_id` = '{req_id}'")
