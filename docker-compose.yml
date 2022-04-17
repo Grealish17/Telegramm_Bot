@@ -6,16 +6,13 @@ services:
     image: mysql:8.0
     restart: always
     ports:
-      - 3301:3306
+      - 3300:3306
     environment:
-      - MYSQL_NAME=support_bot_db
-      - HOST=localhost
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=123
+      - MYSQL_DATABASE
       - MYSQL_ROOT_PASSWORD=123456
     volumes:
       - ./SQL-DB/sql:/docker-entrypoint-initdb.d
-      - ./data:/var/lib/mysql
+      - db:/var/lib/mysql
       - ./SQL-DB/sql_conf:/etc/mysql/conf.d
  telegram-bot-api:
     image: python:latest
@@ -24,18 +21,19 @@ services:
     depends_on:
      - db
     environment:
-     - MySQL[0]="db"
-     - MySQL[1]= "user"
-     - MySQL[2]= "123"
-     - MySQL[3]= "support_bot_db"
-     - TOKEN="5336439108:AAGPKdJGeSR-_7KiwF5jQtOeKOo6zLmZ7_s"
-     - ADMIN_ID="462216138"
+     - MYSQL_NAME=support_bot_db
+     - HOST=db
+     - MYSQL_USER=bot
+     - MYSQL_PASSWORD=123
+     - MYSQL_ROOT_PASSWORD=123456
+     - TOKEN=5336439108:AAGPKdJGeSR-_7KiwF5jQtOeKOo6zLmZ7_s
+     - ADMIN_ID=462216138
     links:
      - db
     ports:
      - 8081:8081
     volumes:
-        - ./SQL-DB:/data
+        - ./:/data
 volumes:
   db:
     driver: local
