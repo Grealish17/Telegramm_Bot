@@ -11,9 +11,9 @@ services:
       - MYSQL_DATABASE
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
     volumes:
-      - ./SQL-DB/sql:/docker-entrypoint-initdb.d
+      - ../SQL-DB/sql:/docker-entrypoint-initdb.d
       - db:/var/lib/mysql
-      - ./SQL-DB/sql_conf:/etc/mysql/conf.d
+      - ../SQL-DB/sql_conf:/etc/mysql/conf.d
  telegram-bot-api:
     image: python:latest
     restart: always
@@ -33,7 +33,7 @@ services:
     ports:
      - 8081:8081
     volumes:
-        - ./:/data
+        - ../:/data
 volumes:
   db:
     driver: local

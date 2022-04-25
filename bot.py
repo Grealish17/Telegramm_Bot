@@ -45,21 +45,21 @@ def admin(message):
 def send_text(message):
     user_id = message.from_user.id
 
-    if message.text == '✏️ Задать вопросс':
-        take_new_request = bot.send_message(message.chat.id, 'Введите свой вопрос и наши помощники  скоро с вами свяжутся.', reply_markup=markup.markup_cancel())
+    if message.text == '✏️ Написать запрос':
+        take_new_request = bot.send_message(message.chat.id, 'Введите свой запрос и наши помощники  скоро с вами свяжутся.', reply_markup=markup.markup_cancel())
 
         bot.clear_step_handler_by_chat_id(message.chat.id)
         bot.register_next_step_handler(take_new_request, get_new_request)
 
-    elif message.text == '✉️ Мои вопросы':
+    elif message.text == '✉️ Мои запросы':
         markup_and_value = markup.markup_reqs(user_id, 'my_reqs', '1')
         markup_req = markup_and_value[0]
         value = markup_and_value[1]
 
         if value == 0:
-            bot.send_message(message.chat.id, 'У вас пока ещё нет вопросов.', reply_markup=markup.markup_main())
+            bot.send_message(message.chat.id, 'У вас пока ещё нет запросов.', reply_markup=markup.markup_main())
         else:
-            bot.send_message(message.chat.id, 'Ваши вопросы:', reply_markup=markup_req)
+            bot.send_message(message.chat.id, 'Ваши запросы:', reply_markup=markup_req)
 
     else:
         bot.send_message(message.chat.id, 'Вы возвращены в главное меню.', parse_mode='html', reply_markup=markup.markup_main())
@@ -125,7 +125,7 @@ def get_new_request(message):
         request = check_file['text']
 
         if str(request) == 'None':
-            take_new_request = bot.send_message(message.chat.id, '⚠️ Вы не ввели ваш вопрос. Попробуйте ещё раз, отправив текст вместе с файлом.', reply_markup=markup.markup_cancel())
+            take_new_request = bot.send_message(message.chat.id, '⚠️ Вы не ввели ваш запрос. Попробуйте ещё раз, отправив текст вместе с файлом.', reply_markup=markup.markup_cancel())
 
             bot.clear_step_handler_by_chat_id(message.chat.id)
             bot.register_next_step_handler(take_new_request, get_new_request)
@@ -134,12 +134,12 @@ def get_new_request(message):
             req_id = core.new_req(user_id, request)
             core.add_file(req_id, file_id, file_name, type)
 
-            bot.send_message(message.chat.id, f'✅ Ваш вопрос под ID {req_id} создан. Посмотреть текущие запросы можно нажав кнопку <b>Мои текущие вопросы</b>', parse_mode='html', reply_markup=markup.markup_main())
+            bot.send_message(message.chat.id, f'✅ Ваш запрос под ID {req_id} создан. Посмотреть текущие запросы можно нажав кнопку <b>Мои текущие запросы</b>', parse_mode='html', reply_markup=markup.markup_main())
 
 
     else:
         if request == None:
-            take_new_request = bot.send_message(message.chat.id, '⚠️ Отправляемый вами тип данных не поддерживается в боте. Попробуйте еще раз задать вопрос, использовав один из доступных типов данных (текст, файлы, фото, видео, аудио, голосовые сообщения)', reply_markup=markup.markup_cancel())
+            take_new_request = bot.send_message(message.chat.id, '⚠️ Отправляемый вами тип данных не поддерживается в боте. Попробуйте еще раз отправить ваш запрос, использовав один из доступных типов данных (текст, файлы, фото, видео, аудио, голосовые сообщения)', reply_markup=markup.markup_cancel())
 
             bot.clear_step_handler_by_chat_id(message.chat.id)
             bot.register_next_step_handler(take_new_request, get_new_request)
@@ -150,7 +150,7 @@ def get_new_request(message):
 
         else:
             req_id = core.new_req(user_id, request)
-            bot.send_message(message.chat.id, f'✅ Ваш вопрос под ID {req_id} создан. Посмотреть текущие запросы можно нажав кнопку <b>Мои текущие вопросы</b>', parse_mode='html', reply_markup=markup.markup_main())
+            bot.send_message(message.chat.id, f'✅ Ваш запрос под ID {req_id} создан. Посмотреть текущие запросы можно нажав кнопку <b>Мои текущие запросы</b>', parse_mode='html', reply_markup=markup.markup_main())
 
 
 def get_additional_message(message, req_id, status):
@@ -196,7 +196,7 @@ def get_additional_message(message, req_id, status):
                 if additional_message == 'None':
                     additional_message = ''
 
-                bot.send_message(user_id, f'⚠️ Получен новый ответ на ваш вопрос ID {req_id}!\n\n🧑‍💻 Ответ агента поддержки:\n{additional_message}', reply_markup=markup.markup_main())
+                bot.send_message(user_id, f'⚠️ Получен новый ответ на ваш запрос ID {req_id}!\n\n🧑‍💻 Ответ агента поддержки:\n{additional_message}', reply_markup=markup.markup_main())
 
                 if type == 'photo':
                     bot.send_photo(user_id, photo=file_id, reply_markup=markup.markup_main())
@@ -223,7 +223,7 @@ def callback_inline(call):
             """
             Обработчик кнопок для:
 
-            ✉️ Мои вопросы
+            ✉️ Мои запросы
             ❗️ Ожидают ответа от поддержки,
             ⏳ Ожидают ответа от пользователя
             ✅ Завершенные запросы
@@ -237,14 +237,14 @@ def callback_inline(call):
             value = markup_and_value[1]
 
             if value == 0:
-                bot.send_message(chat_id=call.message.chat.id, text='⚠️ Вопросы не обнаружены.', reply_markup=markup.markup_main())
+                bot.send_message(chat_id=call.message.chat.id, text='⚠️ Запросы не обнаружены.', reply_markup=markup.markup_main())
                 bot.answer_callback_query(call.id)
                 return
 
             try:
-                bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Нажмите на вопрос, чтобы посмотреть историю переписки, либо добавить сообщение:', reply_markup=markup_req)
+                bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Нажмите на запрос, чтобы посмотреть историю переписки, либо добавить сообщение:', reply_markup=markup_req)
             except:
-                bot.send_message(chat_id=call.message.chat.id, text='Ваши вопросы:', reply_markup=markup_req)
+                bot.send_message(chat_id=call.message.chat.id, text='Ваши запросы:', reply_markup=markup_req)
 
             bot.answer_callback_query(call.id)
 

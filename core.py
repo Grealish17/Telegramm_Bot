@@ -21,6 +21,7 @@ def add_file(req_id, file_id, file_name, type):
     cur = con.cursor()
 
     cur.execute(f"INSERT INTO files (`req_id`, `file_id`, `file_name`, `type`) VALUES ('{req_id}', '{file_id}', '{file_name}', '{type}')")
+    cur.execute(f"INSERT INTO files (`req_id`, `file_id`, `file_name`, `type`) VALUES ('{req_id}', '{file_id}', '{file_name}', '{type}')")
     con.commit()
 
     cur.close()

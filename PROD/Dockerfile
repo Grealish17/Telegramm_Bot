@@ -5,11 +5,9 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-WORKDIR .
+WORKDIR ..
 
 COPY . .
 
-ENTRYPOINT ["tail", "-f", "/dev/null" ]
-
-#ADD bot.py /
-#CMD [ "python", "./bot.py" ]
+ADD bot.py /
+CMD [ "python", "./bot.py" ]
