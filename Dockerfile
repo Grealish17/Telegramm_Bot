@@ -9,7 +9,7 @@ WORKDIR .
 
 COPY . .
 
-#ENTRYPOINT ["tail", "-f", "/dev/null" ]
+ENTRYPOINT ["tail", "-f", "/dev/null" ]
 
-ADD bot.py /
-CMD [ "python", "./bot.py" ]
+#ADD bot.py /
+#CMD [ "python", "./bot.py" ]
