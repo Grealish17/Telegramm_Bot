@@ -1,10 +1,18 @@
-CREATE DATABASE support_bot_db;
+/*CREATE DATABASE support_bot_db;
 CREATE USER 'bot'@'%' IDENTIFIED WITH mysql_native_password BY '123';
 GRANT ALL ON support_bot_db.* TO 'bot'@'%';
 
 FLUSH PRIVILEGES;
 
-USE support_bot_db;
+USE support_bot_db;*/
+
+CREATE DATABASE ${MYSQL_NAME};
+CREATE USER ${MYSQL_USER}@${HOST} IDENTIFIED WITH mysql_native_password BY ${MYSQL_PASSWORD};
+GRANT ALL ON ${MYSQL_NAME}.* TO ${MYSQL_USER}@${HOST};
+
+FLUSH PRIVILEGES;
+
+USE ${MYSQL_NAME};
 
 CREATE TABLE agents(id INT NOT NULL AUTO_INCREMENT, `agent_id` VARCHAR(20), PRIMARY KEY (id));
 ALTER TABLE agents CONVERT TO CHARACTER SET utf8mb4;
@@ -16,12 +24,3 @@ CREATE TABLE requests(req_id INT NOT NULL AUTO_INCREMENT, `user_id` VARCHAR(20),
 ALTER TABLE requests CONVERT TO CHARACTER SET utf8mb4;
 CREATE TABLE messages(id INT NOT NULL AUTO_INCREMENT, `req_id` VARCHAR(20), `message` VARCHAR(4096), `user_status` VARCHAR(20), `date` VARCHAR(50), PRIMARY KEY (id));
 ALTER TABLE messages CONVERT TO CHARACTER SET utf8mb4;
-
-/*CREATE DATABASE ${MYSQL_NAME};
-CREATE USER ${MYSQL_USER}@${HOST} IDENTIFIED WITH mysql_native_password BY ${MYSQL_PASSWORD};
-GRANT ALL ON ${MYSQL_NAME}.* TO ${MYSQL_USER}@${HOST};
-
-/* Make sure the privileges are installed */
-FLUSH PRIVILEGES;
-
-USE ${MYSQL_NAME};*/

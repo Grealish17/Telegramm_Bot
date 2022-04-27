@@ -9,6 +9,10 @@ services:
       - 3300:3306
     environment:
       - MYSQL_DATABASE
+      - MYSQL_NAME=${MYSQL_NAME}
+      - HOST=${HOST}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - ./SQL-DB/sql:/docker-entrypoint-initdb.d
