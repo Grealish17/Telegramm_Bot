@@ -7,13 +7,7 @@ services:
     restart: always
     ports:
       - 3300:3306
-    environment:
-      - MYSQL_DATABASE
-      - MYSQL_NAME=${MYSQL_NAME}
-      - HOST=${HOST}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+    env_file: .env
     volumes:
       - ./SQL-DB/sql:/docker-entrypoint-initdb.d
       - db:/var/lib/mysql
@@ -24,14 +18,7 @@ services:
     build: .
     depends_on:
      - db
-    environment:
-     - MYSQL_NAME=${MYSQL_NAME}
-     - HOST=${HOST}
-     - MYSQL_USER=${MYSQL_USER}
-     - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-     - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-     - TOKEN=${TOKEN}
-     - ADMIN_ID=${ADMIN_ID}
+    env_file: .env
     links:
      - db
     ports:
