@@ -25,10 +25,7 @@ def agent(message):
         bot.send_message(message.chat.id, '🔑 Вы авторизованы как Помощник', parse_mode='html', reply_markup=markup.markup_agent())
 
     else:
-        take_password_message = bot.send_message(message.chat.id, '⚠️ Вас нет в базе. Отправь одноразовый пароль доступа.', reply_markup=markup.markup_cancel())
-
-        bot.clear_step_handler_by_chat_id(message.chat.id)
-        bot.register_next_step_handler(take_password_message, get_password_message)
+        bot.send_message(message.chat.id, '⚠️ Вас нет в базе. Обратитесь у администратору и попросите добавить вас в базу агентов.')
 
 
 @bot.message_handler(commands=['admin'])
@@ -64,33 +61,6 @@ def send_text(message):
     else:
         bot.send_message(message.chat.id, 'Вы возвращены в главное меню.', parse_mode='html', reply_markup=markup.markup_main())
 
-
-def get_password_message(message):
-    password = message.text
-    user_id = message.from_user.id
-
-    if password == None:
-        send_message = bot.send_message(message.chat.id, '⚠️ Вы отправляете не текст. Попробуйте еще раз.', reply_markup=markup.markup_cancel())
-
-        bot.clear_step_handler_by_chat_id(message.chat.id)
-        bot.register_next_step_handler(send_message, get_password_message)
-
-    elif password.lower() == 'отмена':
-        bot.send_message(message.chat.id, 'Отменено.', reply_markup=markup.markup_main())
-        return
-
-    elif core.valid_password(password) == True:
-        core.delete_password(password)
-        core.add_agent(user_id)
-
-        bot.send_message(message.chat.id, '🔑 Вы авторизованы как Агент поддержки', parse_mode='html', reply_markup=markup.markup_main())
-        bot.send_message(message.chat.id, 'Выберите раздел технической панели:', parse_mode='html', reply_markup=markup.markup_agent())
-
-    else:
-        send_message = bot.send_message(message.chat.id, '⚠️ Неверный пароль. Попробуй ещё раз.', reply_markup=markup.markup_cancel())
-
-        bot.clear_step_handler_by_chat_id(message.chat.id)
-        bot.register_next_step_handler(send_message, get_password_message)
 
 
 def get_agent_id_message(message):
@@ -426,36 +396,6 @@ def callback_inline(call):
                 bot.send_message(call.message.chat.id, 'Нажмите на пароль, чтобы удалить его', parse_mode='html', reply_markup=markup_passwords)
 
             bot.answer_callback_query(call.id)
-
-
-        elif 'delete_password:' in call.data:
-            password = call.data.split(':')[1]
-            core.delete_password(password)
-
-            try:
-                bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text='Нажмите на пароль, чтобы удалить его', parse_mode='html', reply_markup=markup.markup_passwords('1')[0])
-            except:
-                bot.send_message(call.message.chat.id, 'Нажмите на пароль, чтобы удалить его', parse_mode='html', reply_markup=markup.markup_passwords('1')[0])
-
-            bot.answer_callback_query(call.id)
-
-
-        elif call.data == 'generate_passwords':
-
-            passwords = core.generate_passwords(10, 16)
-            core.add_passwords(passwords)
-
-            text_passwords = ''
-            i = 1
-            for password in passwords:
-                text_passwords += f'{i}. {password}\n'
-                i += 1
-
-            bot.send_message(call.message.chat.id, f"✅ Сгенерировано {i-1} паролей:\n\n{text_passwords}", parse_mode='html', reply_markup=markup.markup_main())
-            bot.send_message(call.message.chat.id, 'Нажмите на пароль, чтобы удалить его', parse_mode='html', reply_markup=markup.markup_passwords('1')[0])
-
-            bot.answer_callback_query(call.id)
-
 
         elif 'stop_bot:' in call.data:
             status = call.data.split(':')[1]

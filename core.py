@@ -79,19 +79,6 @@ def add_message(req_id, message, user_status):
 
 
 
-def add_passwords(passwords):
-    con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
-    cur = con.cursor()
-
-    for password in passwords:
-        cur.execute(f"INSERT INTO passwords (`password`) VALUES ('{password}')")
-
-    con.commit()
-
-    cur.close()
-    con.close()
-
-
 
 def check_agent_status(user_id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
@@ -108,22 +95,6 @@ def check_agent_status(user_id):
     else:
         return True
 
-
-
-def valid_password(password):
-    con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
-    cur = con.cursor()
-
-    cur.execute(f"SELECT * FROM passwords WHERE `password` = '{password}'")
-    password = cur.fetchone()
-
-    cur.close()
-    con.close()
-
-    if password == None:
-        return False
-    else:
-        return True
 
 
 
@@ -190,20 +161,6 @@ def get_file_text(file_name, type):
 
 
 
-def generate_passwords(number, lenght):
-    chars = 'abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
-
-    passsords = []
-    for _ in range(number):
-        password = ''
-        for _ in range(lenght):
-            password += random.choice(chars)
-
-        passsords.append(password)
-
-    return passsords
-
-
 
 def get_user_id_of_req(req_id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
@@ -247,18 +204,6 @@ def get_req_status(req_id):
 
 
 
-def delete_password(password):
-    con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
-    cur = con.cursor()
-
-    cur.execute(f"DELETE FROM {config.db_name}.passwords WHERE `password` = '{password}'")
-    con.commit()
-
-    cur.close()
-    con.close()
-
-
-
 def delete_agent(agent_id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
@@ -281,21 +226,6 @@ def confirm_req(req_id):
     cur.close()
     con.close()
 
-
-
-def get_passwords(number):
-    limit = (int(number) * 10) - 10
-
-    con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
-    cur = con.cursor()
-
-    cur.execute(f"SELECT `password` FROM passwords LIMIT {limit}, 10")
-    passwords = cur.fetchall()
-
-    cur.close()
-    con.close()
-
-    return passwords
 
 
 

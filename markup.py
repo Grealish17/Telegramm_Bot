@@ -1,5 +1,5 @@
 from telebot import types
-from core import my_reqs, get_reqs, get_agents, get_passwords, get_files, get_icon_from_status, get_file_text
+from core import my_reqs, get_reqs, get_agents, get_files, get_icon_from_status, get_file_text
 
 
 def page(markup, number, list, call, callback_cancel):
@@ -63,10 +63,8 @@ def markup_admin():
     markup_admin = types.InlineKeyboardMarkup(row_width=1)
     item1 = types.InlineKeyboardButton("✅ Добавить агента поддержки", callback_data='add_agent')
     item2 = types.InlineKeyboardButton("🧑‍💻 Агенты поддержки", callback_data='all_agents:1')
-    item3 = types.InlineKeyboardButton("🔑 Одноразовые пароли", callback_data='all_passwords:1')
-    item4 = types.InlineKeyboardButton("🎲 Сгенерировать одноразовые пароли", callback_data='generate_passwords')
-    item5 = types.InlineKeyboardButton("⛔️ Выключить бота", callback_data='stop_bot:wait')
-    markup_admin.add(item1, item2, item3, item4, item5)
+    item3 = types.InlineKeyboardButton("⛔️ Выключить бота", callback_data='stop_bot:wait')
+    markup_admin.add(item1, item2, item3)
 
     return markup_admin
 
@@ -159,20 +157,6 @@ def markup_agents(number):
 
     return markup_agents, len(agents)
 
-
-def markup_passwords(number):
-    passwords = get_passwords(number)
-
-    markup_passwords = types.InlineKeyboardMarkup(row_width=3)
-    for password in passwords:
-        password_value = password[0]
-
-        item = types.InlineKeyboardButton(password_value, callback_data=f'delete_password:{password_value}')
-        markup_passwords.add(item)
-    
-    markup_passwords = page(markup_passwords, number, passwords, 'all_passwords', 'back_admin')
-
-    return markup_passwords, len(passwords)
 
 
 def markup_files(number, req_id, callback):
