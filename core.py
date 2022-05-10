@@ -8,7 +8,7 @@ def add_agent(agent_id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"INSERT INTO agents (`agent_id`) VALUES ('{agent_id}')")
+    cur.execute(f"INSERT INTO agents (`agent_id`) VALUES (%s)", (agent_id,))
     con.commit()
 
     cur.close()
@@ -20,8 +20,7 @@ def add_file(req_id, file_id, file_name, type):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"INSERT INTO files (`req_id`, `file_id`, `file_name`, `type`) VALUES ('{req_id}', '{file_id}', '{file_name}', '{type}')")
-    cur.execute(f"INSERT INTO files (`req_id`, `file_id`, `file_name`, `type`) VALUES ('{req_id}', '{file_id}', '{file_name}', '{type}')")
+    cur.execute(f"INSERT INTO files (`req_id`, `file_id`, `file_name`, `type`) VALUES (%s, %s, %s, %s)", (req_id, file_id, file_name, type,))
     con.commit()
 
     cur.close()
@@ -34,7 +33,7 @@ def new_req(user_id, request):
     cur = con.cursor()
 
 
-    cur.execute(f"INSERT INTO requests (`user_id`, `req_status`) VALUES ('{user_id}', 'waiting')")
+    cur.execute(f"INSERT INTO requests (`user_id`, `req_status`) VALUES (%s, 'waiting')", (user_id,))
 
 
     req_id = cur.lastrowid
@@ -43,7 +42,7 @@ def new_req(user_id, request):
     date_now = dt.strftime('%d.%m.%Y %H:%M:%S')
 
 
-    cur.execute(f"INSERT INTO messages (`req_id`, `message`, `user_status`, `date`) VALUES ('{req_id}', '{request}', 'user', '{date_now}')")
+    cur.execute(f"INSERT INTO messages (`req_id`, `message`, `user_status`, `date`) VALUES (%s, %s, 'user', %s)", (req_id, request, date_now,))
 
     con.commit()
 
@@ -67,10 +66,10 @@ def add_message(req_id, message, user_status):
     cur = con.cursor()
 
 
-    cur.execute(f"INSERT INTO messages (`req_id`, `message`, `user_status`, `date`) VALUES ('{req_id}', '{message}', '{user_status}', '{date_now}')")
+    cur.execute(f"INSERT INTO messages (`req_id`, `message`, `user_status`, `date`) VALUES (%s, %s, %s, %s)", (req_id, message, user_status, date_now,))
 
 
-    cur.execute(f"UPDATE requests SET `req_status` = '{req_status}' WHERE `req_id` = '{req_id}'")
+    cur.execute(f"UPDATE requests SET `req_status` = %s WHERE `req_id` = %s", (req_status, req_id))
 
     con.commit()
 
@@ -84,7 +83,7 @@ def check_agent_status(user_id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"SELECT * FROM agents WHERE `agent_id` = '{user_id}'")
+    cur.execute(f"SELECT * FROM agents WHERE `agent_id` = %s", (user_id,))
     agent = cur.fetchone()
 
     cur.close()
@@ -166,7 +165,7 @@ def get_user_id_of_req(req_id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"SELECT `user_id` FROM requests WHERE `req_id` = '{req_id}'")
+    cur.execute(f"SELECT `user_id` FROM requests WHERE `req_id` = %s", (req_id,))
     user_id = cur.fetchone()[0]
 
     cur.close()
@@ -180,7 +179,7 @@ def get_file_id(id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"SELECT `file_id` FROM files WHERE `id` = '{id}'")
+    cur.execute(f"SELECT `file_id` FROM files WHERE `id` = %s", (id,))
     file_id = cur.fetchone()[0]
 
     cur.close()
@@ -194,7 +193,7 @@ def get_req_status(req_id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"SELECT `req_status` FROM requests WHERE `req_id` = '{req_id}'")
+    cur.execute(f"SELECT `req_status` FROM requests WHERE `req_id` = %s", (req_id,))
     req_status = cur.fetchone()[0]
 
     cur.close()
@@ -208,7 +207,7 @@ def delete_agent(agent_id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"DELETE FROM {config.db_name}.agents WHERE `agent_id` = '{agent_id}'")
+    cur.execute(f"DELETE FROM {config.db_name}.agents WHERE `agent_id` = %s", (agent_id,))
     con.commit()
 
     cur.close()
@@ -220,7 +219,7 @@ def confirm_req(req_id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"UPDATE requests SET `req_status` = 'confirm' WHERE `req_id` = '{req_id}'")
+    cur.execute(f"UPDATE requests SET `req_status` = 'confirm' WHERE `req_id` = %s", (req_id,))
     con.commit()
 
     cur.close()
@@ -251,7 +250,7 @@ def my_reqs(number, user_id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"SELECT `req_id`, `req_status` FROM requests WHERE `user_id` = '{user_id}' ORDER BY `req_id` DESC LIMIT {limit}, 10")
+    cur.execute(f"SELECT `req_id`, `req_status` FROM requests WHERE `user_id` = %s ORDER BY `req_id` DESC LIMIT {limit}, 10", (user_id,))
     reqs = cur.fetchall()
 
     cur.close()
@@ -268,7 +267,7 @@ def get_reqs(number, callback):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"SELECT `req_id`, `req_status` FROM requests WHERE `req_status` = '{req_status}' ORDER BY `req_id` DESC LIMIT {limit}, 10")
+    cur.execute(f"SELECT `req_id`, `req_status` FROM requests WHERE `req_status` = %s ORDER BY `req_id` DESC LIMIT {limit}, 10", (req_status,))
     reqs = cur.fetchall()
 
     cur.close()
@@ -282,7 +281,7 @@ def get_files(number, req_id):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"SELECT `id`, `file_name`, `type` FROM files WHERE `req_id` = '{req_id}' ORDER BY `id` DESC LIMIT {limit}, 10")
+    cur.execute(f"SELECT `id`, `file_name`, `type` FROM files WHERE `req_id` = %s ORDER BY `id` DESC LIMIT {limit}, 10", (req_id,))
     files = cur.fetchall()
 
     cur.close()
@@ -301,7 +300,7 @@ def get_request_data(req_id, callback):
     con = pymysql.connect(host=config.db_host, user=config.db_user, passwd=config.db_password, db=config.db_name)
     cur = con.cursor()
 
-    cur.execute(f"SELECT `message`, `user_status`, `date` FROM messages WHERE `req_id` = '{req_id}'")
+    cur.execute(f"SELECT `message`, `user_status`, `date` FROM messages WHERE `req_id` = %s", (req_id,))
     messages = cur.fetchall()
 
     cur.close()
