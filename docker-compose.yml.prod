@@ -15,7 +15,7 @@ services:
  telegram-bot-api:
     image: python:latest
     restart: always
-    build: .
+    build: ./PROD
     depends_on:
      - db
     env_file: .env
