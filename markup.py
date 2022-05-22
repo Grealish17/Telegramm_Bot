@@ -31,10 +31,18 @@ def page(markup, number, list, call, callback_cancel):
     return markup 
 
 
+def markup_user():
+    markup_user = types.InlineKeyboardMarkup(row_width=1)
+    item0 = types.InlineKeyboardButton(text="Перейти к автоответчику", url="https://t.me/DeepPavlov_testing_bot")
+    markup_user.add(item0)
+    return markup_user
+
 def markup_main():
     markup_main = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item0 = types.KeyboardButton('Автоответчик')
     item1 = types.KeyboardButton("✏️ Написать запрос")
     item2 = types.KeyboardButton("✉️ Мои запросы")
+    markup_main.row(item0)
     markup_main.row(item1)
     markup_main.row(item2)
 
@@ -118,7 +126,6 @@ def markup_request_action(req_id, req_status, callback):
             status_user = 'user'
         else:
             status_user = 'agent'
-
         item1 = types.InlineKeyboardButton("✏️ Добавить сообщение", callback_data=f'add_message:{req_id}:{status_user}')
         item2 = types.InlineKeyboardButton("🗂 Показать файлы", callback_data=f'req_files:{req_id}:{callback}:1')
 

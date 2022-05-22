@@ -58,6 +58,9 @@ def send_text(message):
         else:
             bot.send_message(message.chat.id, 'Ваши запросы:', reply_markup=markup_req)
 
+    elif message.text == 'Автоответчик':
+        bot.send_message(message.chat.id, 'Для перехода к автоотвечтику нажмите на кнопку ниже.', reply_markup=markup.markup_user())
+
     else:
         bot.send_message(message.chat.id, 'Вы возвращены в главное меню.', parse_mode='html', reply_markup=markup.markup_main())
 
