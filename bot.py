@@ -12,6 +12,10 @@ if config.PROXY_URL:
 
 bot = telebot.TeleBot(config.db_token, skip_pending=True)
 
+from deeppavlov.utils.telegram import interact_model_by_telegram
+
+interact_model_by_telegram(model_config=model.json, token=db_auto_token)
+
 @bot.message_handler(commands=['start'])
 def start(message):
     bot.send_message(message.chat.id, '👋🏻 Привет! Это бот для помощи студентам НИЯУ МИФИ..\nЕсли у тебя есть какой-либо вопрос или проблема - нажми на кнопку <b>Написать запрос</b> и наши помощники в скором времени тебе ответят!', parse_mode='html', reply_markup=markup.markup_main())

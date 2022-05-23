@@ -33,7 +33,7 @@ def page(markup, number, list, call, callback_cancel):
 
 def markup_user():
     markup_user = types.InlineKeyboardMarkup(row_width=1)
-    item0 = types.InlineKeyboardButton(text="Перейти к автоответчику", url="https://t.me/DeepPavlov_testing_bot")
+    item0 = types.InlineKeyboardButton(text="Перейти к автоответчику", url=db_auto_url)
     markup_user.add(item0)
     return markup_user
 
