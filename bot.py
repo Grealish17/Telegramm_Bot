@@ -12,9 +12,6 @@ if config.PROXY_URL:
 
 bot = telebot.TeleBot(config.db_token, skip_pending=True)
 
-from deeppavlov.utils.telegram import interact_model_by_telegram
-
-interact_model_by_telegram(model_config=model.json, token=db_auto_token)
 
 @bot.message_handler(commands=['start'])
 def start(message):

@@ -1,4 +1,6 @@
 from telebot import types
+
+import config
 from core import my_reqs, get_reqs, get_agents, get_files, get_icon_from_status, get_file_text
 
 
@@ -33,7 +35,7 @@ def page(markup, number, list, call, callback_cancel):
 
 def markup_user():
     markup_user = types.InlineKeyboardMarkup(row_width=1)
-    item0 = types.InlineKeyboardButton(text="Перейти к автоответчику", url=db_auto_url)
+    item0 = types.InlineKeyboardButton(text="Перейти к автоответчику", url=config.db_auto_url)
     markup_user.add(item0)
     return markup_user
 

@@ -30,6 +30,14 @@ services:
      - 8081:8081
     volumes:
         - ./:/data
+ telegram-bot-api-2:
+    image: python:3.7
+    restart: always
+    build: ./AUTO
+    env_file: .env
+    ports:
+     - 8082:8082
+
 volumes:
   db:
     driver: local
