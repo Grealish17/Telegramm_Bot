@@ -1,2 +1,0 @@
-./sql.py
-./bot.py
